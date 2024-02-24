@@ -24,10 +24,13 @@ def extract_frames_and_audio(input_file):
         print(f"Created folder: {output_folder}")
 
     # Use ffmpeg to extract video frames into PNG images
-    subprocess.run(['ffmpeg', '-i', input_file, f'{output_folder}/frame-%10d.png'])
+    subprocess.run(['ffmpeg', '-i', input_file, f'{output_folder}/%10d.png'])
 
     # Use ffmpeg to extract audio as WAV
-    subprocess.run(['ffmpeg', '-i', input_file, '-vn', '-acodec', 'pcm_s16le', '-ar', '44100', '-ac', '2', f'{output_folder}/audio.wav'])
+    subprocess.run(['ffmpeg', '-i', input_file, '-map', '0:a:0', f'{output_folder}/ambiance.wav'])
+
+        # Use ffmpeg to extract audio as WAV
+    subprocess.run(['ffmpeg', '-i', input_file, '-map', '0:a:1', f'{output_folder}/voices.wav'])
 
     print(f"Extraction complete for {input_file}. PNG images and WAV file saved in: {output_folder}")
 
